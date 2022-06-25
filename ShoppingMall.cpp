@@ -118,7 +118,49 @@ class shopping{
 	}
 	
 	void shopping::add(){
-		cout<<"Just for testing.....\nRemove it...\nadd\n";
+         fstream data;
+		 int c, token=0;
+		 float p, d;
+		 string n;
+		 cout<<"\n\t Add new product \n";
+		 cout<<"\n\t Product code of the product ";
+		 cin>>productCode;
+		 cout<<"\n\t Name of the product "; 
+		 cin>>productName;
+		 cout<<"\n\t Price of the Product ";
+		 cin>>price;
+		 cout<<"\n\t Discount on product ";
+		 cin>>discount;
+		 
+		 data.open("database.txt", ios::in);
+		 if(!data)
+		 {
+		 	data.open("database.txt", ios::app|ios::out);
+		 	data<<" "<<productCode<<" "<<productName<<" "<<price<<" "<<discount<<" \n";
+			data.close();
+		 }
+		 else
+		 {
+		 	data>>c>>n>>p>>d;
+		 	while(!data.eof())
+		 	{
+		 		if(c==productCode)
+		 		{
+		 			token++;
+				 }
+				 data>>c>>n>>p>>d;
+			}
+			data.close();
+
+		if(token==1)
+		 goto tryAgain;
+		 else{
+		 	data.open("database.txt", ios::app|ios::out);
+		 	data<<" "<<productCode<<" "<<productName<<" "<<discount<<" \n";
+		 	data.close();
+		 }
+}
+cout<<"\n\t Record Inserted : ";
 	}
 
 	void shopping ::edit(){
