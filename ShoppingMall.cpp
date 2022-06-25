@@ -52,7 +52,7 @@ class shopping{
 						system("exit");
 						break;
 				case -1:		//this is just for checking a function easily. later on we'll remove it.
-						edit();
+						list();
 						break;
 				default:
 					cout<<"You have Entered an Invalid Option!\n" <<
@@ -148,7 +148,17 @@ class shopping{
 	}
 	
 	void shopping::list(){
-		cout<<"Just for testing.....\nRemove it...\nlist\n";
+		fstream data;
+		data.open("database.txt", ios::in);
+		cout<<"\n\n\t^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n";
+		cout<<"\t\tproNo\t\tName\t\tPrice\n";
+		cout<<"\n\t______________________________________________________________\n";
+		data>>productCode>>productName>>price>>discount;
+		while (!data.eof()){
+			cout<<"\t\t"<<productCode<<"\t\t"<<productName<<"\t\t"<<price<<"\n";
+			data>>productCode>>productName>>price>>discount;
+		}
+		data.close();
 	}
 	
 	void shopping::receipt(){
