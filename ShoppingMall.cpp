@@ -25,7 +25,6 @@ class shopping{
 	   tryAgain:
 		int select ;
 		string email, password;
-<<<<<<< HEAD
 	   	system("cls");
 		cout<<"\n\t\t______Supermarket Main Menu______ \n\n";
 		cout<<"\n\t|\t1) Administartor  |\n";
@@ -55,51 +54,13 @@ class shopping{
 			default:
 				cout<<"You have Entered an Invalid Option!\n" <<
 					"Please select from the given menue again.";
+				sleep(3);
+				goto tryAgain;
 		}
-	//	sleep(3);
-		goto tryAgain;
-=======
-		tryAgain:
-		   	system("cls");
-			cout<<"\n\t\t*~*~*~*~*~* Supermarket Main Menu *~*~*~*~*~*\n\n";
-			cout<<"\n\t|\t1) Administrator  |\n";
-			cout<<"\n\t|\t2) Buyer          |\n";
-			cout<<"\n\t|\t3) Exit           |\n";
-			cout<<"\n\tPlease Select! any from above: ";
-			cin>>select;
-			
-			switch(select){
-				case 1:
-					cout<<"\tHi! Please Login \n";
-					cout<<"\tEnter Email: ";
-					cin>>email;
-					cout<<"\tEnter Your Password: ";
-					cin>>password;
-						if(email=="uetp@gmail.com" && password== "uetp")
-							administrator();
-						else
-							cout<<"\n\tSorry! Invalid Credentials! ";
-					break;
-				case 2:
-			   			buyer();
-			   			break;
-				case 3:
-						system("exit");
-						break;
-				case -1:		//this is just for checking a function easily. later on we'll remove it.
-						receipt();
-						break;
-				default:
-					cout<<"You have Entered an Invalid Option!\n" <<
-						"Please select from the given menu again.";
-					sleep(3);
-					goto tryAgain;
-			}
->>>>>>> 2534e41a6c0ebe7fc671be181dd8401d56886354
+		
 	}
 	
-	void shopping::administrator()
-	{
+	void shopping::administrator(){
 		tryAgain:
 		int choice;
 		cout<<"\n Administrator Menu";
@@ -112,23 +73,23 @@ class shopping{
 	    switch(choice)
 	    {
 	    	case 1:
-			 add();
-	    	 break;
+				add();
+	    		break;
 	    	
 	    	case 2:
-	    	 edit();
-	    	 break;
+	    		edit();
+	    		break;
 	    	
 			case 3:
-			 remove();
-			 break;
+				remov();
+				break;
 			
 			case 4:
-			 menu();
-			 break;
+				menu();
+				break;
 			
 			default:
-			 cout<<"Invalid choice";    	
+				cout<<"Invalid choice";    	
 		}
 	  goto tryAgain	;
 	}
@@ -192,14 +153,14 @@ class shopping{
 			data.close();
 
 		if(token==1)
-		 goto tryAgain;
+		cout<<"error";// goto tryAgain;
 		 else{
 		 	data.open("database.txt", ios::app|ios::out);
 		 	data<<" "<<productCode<<" "<<productName<<" "<<discount<<" \n";
 		 	data.close();
 		 }
-}
-cout<<"\n\t Record Inserted : ";
+		}
+		cout<<"\n\t Record Inserted : ";
 	}
 
 	void shopping::edit(){
