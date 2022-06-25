@@ -2,7 +2,7 @@
 using namespace std;
 
 int main(){
-	//this is just a startup file.
+	//this is just a startup file
 
 
 
