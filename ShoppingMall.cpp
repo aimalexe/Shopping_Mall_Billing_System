@@ -5,7 +5,7 @@
 using namespace std;
 
 class shopping{
-		// Declaring global variable for class shoping
+		// Declaring global variable for class shopping
 		private:                          
 			int productCode;
 			float price, discount;
@@ -27,7 +27,7 @@ class shopping{
 		tryAgain:
 		   	system("cls");
 			cout<<"\n\t\t*~*~*~*~*~* Supermarket Main Menu *~*~*~*~*~*\n\n";
-			cout<<"\n\t|\t1) Administartor  |\n";
+			cout<<"\n\t|\t1) Administrator  |\n";
 			cout<<"\n\t|\t2) Buyer          |\n";
 			cout<<"\n\t|\t3) Exit           |\n";
 			cout<<"\n\tPlease Select! any from above: ";
@@ -56,7 +56,7 @@ class shopping{
 						break;
 				default:
 					cout<<"You have Entered an Invalid Option!\n" <<
-						"Please select from the given menue again.";
+						"Please select from the given menu again.";
 					sleep(3);
 					goto tryAgain;
 			}
@@ -184,7 +184,7 @@ class shopping{
 					cin>>prodQuantity[index];
 					for (int i = 0; i<index; i++)
 						if(prodCode[index]==prodCode[i]){
-							cout<<"\n\tDuplicat Items/ Product Code! Please try again.";
+							cout<<"\n\tDuplicate Items/ Product Code! Please try again.";
 							goto enterAgain;
 						}
 					index++;
