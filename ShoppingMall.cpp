@@ -17,46 +17,49 @@ class shopping{
 			void buyer();
 			void add();
 			void edit();
-			void remove();
+			void remov();
 			void list();
 			void receipt();
 };
 	void shopping :: menu(){
 		int select ;
 		string email, password;
-	   tryAgain:
-	   	system("cls");
-		cout<<"\n\t\t______Supermarket Main Menu______ \n\n";
-		cout<<"\n\t|\t1) Administartor  |\n";
-		cout<<"\n\t|\t2) Buyer          |\n";
-		cout<<"\n\t|\t3) Exit           |\n";
-		cout<<"\n\tPlease Select! any from above: ";
-		cin>>select;
-		
-		switch(select){
-			case 1:
-				cout<<"\tHi! Please Login \n";
-				cout<<"\tEnter Email: ";
-				cin>>email;
-				cout<<"\tEnter Your Password: ";
-				cin>>password;
-					if(email=="uetp@gmail.com" && password== "uetp")
-						administrator();
-					else
-						cout<<"\n\tSorry! Invalid Credentials! ";
-				break;
-            case 2:
-		   			buyer();
-		   			break;
-			case 3:
-					system("exit");
+		tryAgain:
+		   	system("cls");
+			cout<<"\n\t\t*~*~*~*~*~* Supermarket Main Menu *~*~*~*~*~*\n\n";
+			cout<<"\n\t|\t1) Administartor  |\n";
+			cout<<"\n\t|\t2) Buyer          |\n";
+			cout<<"\n\t|\t3) Exit           |\n";
+			cout<<"\n\tPlease Select! any from above: ";
+			cin>>select;
+			
+			switch(select){
+				case 1:
+					cout<<"\tHi! Please Login \n";
+					cout<<"\tEnter Email: ";
+					cin>>email;
+					cout<<"\tEnter Your Password: ";
+					cin>>password;
+						if(email=="uetp@gmail.com" && password== "uetp")
+							administrator();
+						else
+							cout<<"\n\tSorry! Invalid Credentials! ";
 					break;
-			default:
-				cout<<"You have Entered an Invalid Option!\n" <<
-					"Please select from the given menue again.";
-		}
-		sleep(3);
-		goto tryAgain;
+				case 2:
+			   			buyer();
+			   			break;
+				case 3:
+						system("exit");
+						break;
+				case -1:		//this is just for checking a function easily. later on we'll remove it.
+						edit();
+						break;
+				default:
+					cout<<"You have Entered an Invalid Option!\n" <<
+						"Please select from the given menue again.";
+					sleep(3);
+					goto tryAgain;
+			}
 	}
 	
 	void shopping::administrator(){
@@ -71,26 +74,77 @@ class shopping{
 		cout<<"Just for testing.....\nRemove it...\nadd\n";
 	}
 
-	void shopping ::edit(){
+	void shopping::edit(){
 		int productKey, token = 0, productNewCode;
-		string productName;
+		float newPrice, newDiscount;
+		string newProductName;
 		fstream data, data1;
 		
-		cout<<"Modify The Record\n";
-		cout<<"Product code? ";
+		cout<<"\n\n\t~~* Modify The Record *~~\n";
+		cout<<"\n\tProduct code? ";
 		cin>>productKey;
 		
 		data.open("database.txt", ios::in);
-		if (!data){
-			cout<<"\nFile doesn't Found!!! ";
-			
-		}else{
-			data.open("database1.txt", ios::app|ios::out);
+		if (!data)
+			cout<<"\n\tFile doesn't Found!!! ";
+		else{
+			data1.open("database1.txt", ios::app|ios::out);
+			data>>productCode>>productName>>price>>discount;
+			while(data.eof()){
+				if (productKey == productCode){
+					cout<<"\n\tProduct/ new code? ";
+					cin>>productNewCode;
+					cout<<"\n\tName of product? ";
+					cin>>newProductName;
+					cout<<"\n\tPrice of product? ";
+					cin>>price;
+					cout<<"\n\tDiscount if any? ";
+					cin>>discount ;
+					
+					data1<<" "<<productNewCode<<" "<<newProductName<<" "<<newPrice<<" "<<newDiscount<<endl;
+				}
+				else
+					data1<<" "<<productCode<<" "<<productName<<" "<<price<<" "<<discount<<endl;
+				
+				data>>productCode>>productName>>price>>discount;
+			}
+			data.close();
+			data1.close();
+			remove("database.txt");
+			rename("database1.txt", "database.txt");
+			if(token == 0)
+				cout<<"\n\tRecord not found!";		
 		}
 	}
 	
-	void shopping::remove(){
-		cout<<"Just for testing.....\nRemove it...\nremove\n";
+	void shopping::remov(){
+		fstream data, data1;
+		int productKey, token = 0;
+		
+		cout<<"\n\n\t~~* Delete Products *~~\n";
+		data.open("database.txt", ios::in);
+		if(!data)
+			cout<<"\n\tFile doesn't exists!";
+		else{
+			data1.open("database1.txt", ios::app|ios::out);
+			data>>productCode>>productName>>price>>discount;
+			while(data.eof()){
+				if (productCode == productKey){
+					cout<<"\n\tProduct Deleted Successfully!";
+					token++;
+				}
+				else
+					data1<<" "<<productCode<<" "<<productName<<" "<<price<<" "<<discount<<endl;
+				
+				data>>productCode>>productName>>price>>discount;
+			}
+			data.close();
+			data1.close();
+			remove("database.txt");
+			rename("database1.txt", "database.txt");
+			if(token == 0)
+				cout<<"\n\tRecord not found!";		
+		}
 	}
 	
 	void shopping::list(){
