@@ -22,9 +22,9 @@ class shopping{
 			void receipt();
 };
 	void shopping :: menu(){
+	   tryAgain:
 		int select ;
 		string email, password;
-	   tryAgain:
 	   	system("cls");
 		cout<<"\n\t\t______Supermarket Main Menu______ \n\n";
 		cout<<"\n\t|\t1) Administartor  |\n";
@@ -55,16 +55,66 @@ class shopping{
 				cout<<"You have Entered an Invalid Option!\n" <<
 					"Please select from the given menue again.";
 		}
-		sleep(3);
+	//	sleep(3);
 		goto tryAgain;
 	}
 	
-	void shopping::administrator(){
-		cout<<"Just for testing.....\nRemove it...\nadministration\n";
+	void shopping::administrator()
+	{
+		tryAgain:
+		int choice;
+		cout<<"\n Administrator Menu";
+		cout<<"\n\n___1) Add the product____\n";
+		cout<<"\n\n___2) Modify the product____\n";
+		cout<<"\n\n___3) Delete the product____\n";
+		cout<<"\n\n___4) Back To main Menu____\n";
+	
+	    cout<<"\n Please enter your choice";
+	    switch(choice)
+	    {
+	    	case 1:
+			 add();
+	    	 break;
+	    	
+	    	case 2:
+	    	 edit();
+	    	 break;
+	    	
+			case 3:
+			 remove();
+			 break;
+			
+			case 4:
+			 menu();
+			 break;
+			
+			default:
+			 cout<<"Invalid choice";    	
+		}
+	  goto tryAgain	;
 	}
 	
 	void shopping::buyer(){
-		cout<<"Just for testing.....\nRemove it...\buyer\n";
+		tryAgain:
+		int choice;
+		cout<<"\n\t Buyer ";
+		cout<<"\n\t\v_________";
+		cout<<"\t   Buy Product  \n";
+		cout<<"\t Go Back  \n";
+		cout<<"Enter your choice : ";
+		cin>>choice;
+		switch(choice)
+		{
+			case 1:
+				receipt();
+				break;
+			case 2:
+			    menu();
+				
+			default :
+			    cout<<"Invalid Choice ";		
+		}
+		goto tryAgain;
 	}
 	
 	void shopping::add(){
