@@ -52,7 +52,7 @@ class shopping{
 						system("exit");
 						break;
 				case -1:		//this is just for checking a function easily. later on we'll remove it.
-						list();
+						receipt();
 						break;
 				default:
 					cout<<"You have Entered an Invalid Option!\n" <<
@@ -162,7 +162,56 @@ class shopping{
 	}
 	
 	void shopping::receipt(){
-		cout<<"Just for testing.....\nRemove it...\nreceipt\n";
+		fstream data;
+		int prodCode[100], prodQuantity[100], index=0;
+		float amount, purchaseDiscount=0, total=0;
+		char buyMore;
+		
+		cout<<"\n\n\t~~* Receipt *~~\n";
+		data.open("database.txt", ios::in);
+		if (!data)
+			cout<<"\nEmpty Database!";
+		else{
+			data.close();
+			list();
+			cout<<"\t\tPlease place the order!";
+			
+			enterAgain:
+				do{
+					cout<<"\n\tEnter product code:-";
+					cin>>prodCode[index];
+					cout<<"\n\tEnter product quantity? ";
+					cin>>prodQuantity[index];
+					for (int i = 0; i<index; i++)
+						if(prodCode[index]==prodCode[i]){
+							cout<<"\n\tDuplicat Items/ Product Code! Please try again.";
+							goto enterAgain;
+						}
+					index++;
+					cout<<"\n\tDo you want to Buy More?\n\tIf yes Press y! ";
+					cin>>buyMore;
+				}while(buyMore == 'y' || buyMore == 'Y');
+				
+				cout<<"\n\n\t^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^~~ RECEIPT ~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n";
+				cout<<"\tProduct No.\tName\t\tQuantity\tPrice\tAmount\tAmount with Discount\n";
+				cout<<"\n\t__________________________________________________________________________________________\n";
+				for (int i = 0; i<index ; i++){
+					data.open("database.txt", ios::in);
+					data>>productCode>>productName>>price>>discount;
+					while(!data.eof()){
+						if (productCode == prodCode[i]){
+							amount = price * prodQuantity[i];
+							discount = amount -  (amount * discount / 100);
+							total = amount + discount;
+							cout<<"\n\t"<<productCode<<"\t\t"<<productName<<"\t\t"<<prodQuantity[i]<<"\t\t"<<price<<"\t\t"<<amount<<"\t\t"<<discount<<"\n";
+						}
+						data>>productCode>>productName>>price>>discount;
+					}
+				}
+				data.close();
+			}
+			cout<<"\n\t__________________________________________________________________________________________\n";
+			cout<<"\n\tTotal Amount: "<<total;
 	}
 
 	int main(){
