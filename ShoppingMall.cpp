@@ -22,76 +22,171 @@ class shopping{
 			void receipt();
 };
 	void shopping :: menu(){
-	   tryAgain:
 		int select ;
-		string email, password;
-	   	system("cls");
-		cout<<"\n\t\t______Supermarket Main Menu______ \n\n";
-		cout<<"\n\t|\t1) Administartor  |\n";
-		cout<<"\n\t|\t2) Buyer          |\n";
-		cout<<"\n\t|\t3) Exit           |\n";
-		cout<<"\n\tPlease Select! any from above: ";
-		cin>>select;
-		
-		switch(select){
-			case 1:
-				cout<<"\tHi! Please Login \n";
-				cout<<"\tEnter Email: ";
-				cin>>email;
-				cout<<"\tEnter Your Password: ";
-				cin>>password;
-					if(email=="uetp@gmail.com" && password== "uetp")
-						administrator();
-					else
-						cout<<"\n\tSorry! Invalid Credentials! ";
-				break;
-            case 2:
-		   			buyer();
-		   			break;
-			case 3:
-					system("exit");
+		string name, password;
+		tryAgain:
+		   	system("cls");
+			cout<<"\n\t\t~*~*~*~*~*~*~*~*~*~*~*~* Supermarket Main Menu ~*~*~*~*~*~*~*~*~*~*~*~*\n\n";
+			cout<<"\n\t1) Administartor";
+			cout<<"\n\t2) Buyer";
+			cout<<"\n\t3) Exit";
+			cout<<"\n\tPlease Select! any from above: ";
+			cin>>select;
+			
+			switch(select){
+				case 1:
+					cout<<"\n\tHi! Please Login";
+					cout<<"\n\tEnter Name: ";
+					cin>>name;
+					cout<<"\tEnter Your Password: ";
+					cin>>password;
+						if(name=="admin" && password== "0000")
+							administrator();
+						else{
+							cout<<"\n\tSorry! Invalid Admin Credentials!";
+							sleep(2);
+						}
 					break;
-			default:
-				cout<<"You have Entered an Invalid Option!\n" <<
-					"Please select from the given menue again.";
-				sleep(3);
-				goto tryAgain;
-		}
+				case 2:
+			   			buyer();
+			   			break;
+				case 3:
+						system("exit");
+						break;
+				case 4:
+					edit();
+					break;
+					
+				default:
+					cout<<"\n\tYou have Entered an Invalid Option!\n\t" <<
+						"Please select from the given menue again.";
+					sleep(2);
+			}
+		goto tryAgain;
 		
 	}
 	
 	void shopping::administrator(){
-		tryAgain:
 		int choice;
-		cout<<"\n Administrator Menu";
-		cout<<"\n\n___1) Add the product____\n";
-		cout<<"\n\n___2) Modify the product____\n";
-		cout<<"\n\n___3) Delete the product____\n";
-		cout<<"\n\n___4) Back To main Menu____\n";
+		selectAgain:
+			cout<<"\n\n\t~~* Administrator Menu *~~\n";
+			cout<<"\n\t1) Add the product";
+			cout<<"\n\t2) Modify the product";
+			cout<<"\n\t3) Delete the product";
+			cout<<"\n\t4) Back To main Menu";
+		
+		    cout<<"\n\tPlease select the correct one: ";
+		    cin>>choice;
+		    switch(choice){
+		    	case 1:
+					add();
+		    		break;
+		    	
+		    	case 2:
+		    		edit();
+		    		break;
+		    	
+				case 3:
+					remov();
+					break;
+				
+				case 4:
+					menu();
+					break;
+				
+				default:
+					cout<<"\n\tInvalid Selection!";						
+					sleep(2);    	
+			}
+	  goto selectAgain;
+	}
 	
-	    cout<<"\n Please enter your choice";
-	    switch(choice)
-	    {
-	    	case 1:
-				add();
-	    		break;
-	    	
-	    	case 2:
-	    		edit();
-	    		break;
-	    	
-			case 3:
-				remov();
-				break;
-			
-			case 4:
-				menu();
-				break;
-			
-			default:
-				cout<<"Invalid choice";    	
+	void shopping::add(){
+         fstream data;
+		 int c, token=0;
+		 float p, d;
+		 string n;
+		 cout<<"\n\n\t~~* Add a New Product *~~\n";
+		 cout<<"\n\tCode of the product: ";
+		 cin>>productCode;
+		 cout<<"\tName of the product: "; 
+		 cin>>productName;
+		 cout<<"\tPrice of the Product: ";
+		 cin>>price;
+		 cout<<"\tDiscount on product: ";
+		 cin>>discount;
+		 
+		 data.open("ProductList.txt", ios::in);
+		 if(!data){
+		 	data.open("ProductList.txt", ios::app|ios::out);
+		 	data<<"\t"<<productCode<<"\t"<<productName<<"\t"<<price<<"\t"<<discount<<"\n";
+			data.close();
+		 }else{
+		 	data>>c>>n>>p>>d;
+		 	while(!data.eof()){
+		 		if(c==productCode)
+		 			token++;
+				data>>c>>n>>p>>d;
+			}
+			data.close();
+			if(token==1){
+				cout<<"\n\tThis product already exists!";
+				sleep(2);
+				administrator();
+			}
+			else{
+			 	data.open("ProductList.txt", ios::app|ios::out);
+			 	data<<"\t"<<productCode<<"\t"<<productName<<"\t"<<price<<"\t"<<discount<<"\n";
+			 	data.close();
+			}
 		}
-	  goto tryAgain	;
+		cout<<"\n\tRecord Successfuly Inserted!";
+	}
+	
+	void shopping::edit(){
+		int productKey, token = 0, productNewCode;
+		float newPrice, newDiscount;
+		string newProductName, insertingMore;
+		fstream data, data1;
+		
+		cout<<"\n\n\t~~* Modify The Record *~~\n";
+		cout<<"\n\tProduct code? ";
+		cin>>productKey;
+		
+		data.open("ProductList.txt", ios::in);
+		if (!data)
+			cout<<"\n\tFile doesn't Found!!! ";
+		else{
+			data1.open("ProductList1.txt", ios::app|ios::out);
+			data>>productCode>>productName>>price>>discount;
+			while(!data.eof()){
+				if (productKey == productCode){
+					cout<<"\n\tProduct new code? ";
+					cin>>productNewCode;
+					cout<<"\tNew name of product? ";
+					cin>>newProductName;
+					cout<<"\tPrice of product? ";
+					cin>>price;
+					cout<<"\tDiscount if any? ";
+					cin>>discount ;
+					token++;
+					
+					data1<<"\t"<<productNewCode<<"\t"<<newProductName<<"\t"<<newPrice<<"\t"<<newDiscount<<endl;
+				}
+				else
+					data1<<"\t"<<productCode<<"\t"<<productName<<"\t"<<price<<"\t"<<discount<<endl;
+				data>>productCode>>productName>>price>>discount;
+			}
+			data.close();
+			data1.close();
+			remove("ProductList.txt");
+			rename("ProductList1.txt", "ProductList.txt");
+			if(token == 0)
+				cout<<"\n\tRecord not found!";
+			else
+				cout<<"\n\tRecord Modefied Successfully!";
+		}
+
 	}
 	
 	void shopping::buyer(){
@@ -116,95 +211,7 @@ class shopping{
 		}
 		goto tryAgain;
 	}
-	
-	void shopping::add(){
-         fstream data;
-		 int c, token=0;
-		 float p, d;
-		 string n;
-		 cout<<"\n\t Add new product \n";
-		 cout<<"\n\t Product code of the product ";
-		 cin>>productCode;
-		 cout<<"\n\t Name of the product "; 
-		 cin>>productName;
-		 cout<<"\n\t Price of the Product ";
-		 cin>>price;
-		 cout<<"\n\t Discount on product ";
-		 cin>>discount;
-		 
-		 data.open("database.txt", ios::in);
-		 if(!data)
-		 {
-		 	data.open("database.txt", ios::app|ios::out);
-		 	data<<" "<<productCode<<" "<<productName<<" "<<price<<" "<<discount<<" \n";
-			data.close();
-		 }
-		 else
-		 {
-		 	data>>c>>n>>p>>d;
-		 	while(!data.eof())
-		 	{
-		 		if(c==productCode)
-		 		{
-		 			token++;
-				 }
-				 data>>c>>n>>p>>d;
-			}
-			data.close();
 
-		if(token==1)
-		cout<<"error";// goto tryAgain;
-		 else{
-		 	data.open("database.txt", ios::app|ios::out);
-		 	data<<" "<<productCode<<" "<<productName<<" "<<discount<<" \n";
-		 	data.close();
-		 }
-		}
-		cout<<"\n\t Record Inserted : ";
-	}
-
-	void shopping::edit(){
-		int productKey, token = 0, productNewCode;
-		float newPrice, newDiscount;
-		string newProductName;
-		fstream data, data1;
-		
-		cout<<"\n\n\t~~* Modify The Record *~~\n";
-		cout<<"\n\tProduct code? ";
-		cin>>productKey;
-		
-		data.open("database.txt", ios::in);
-		if (!data)
-			cout<<"\n\tFile doesn't Found!!! ";
-		else{
-			data1.open("database1.txt", ios::app|ios::out);
-			data>>productCode>>productName>>price>>discount;
-			while(data.eof()){
-				if (productKey == productCode){
-					cout<<"\n\tProduct/ new code? ";
-					cin>>productNewCode;
-					cout<<"\n\tName of product? ";
-					cin>>newProductName;
-					cout<<"\n\tPrice of product? ";
-					cin>>price;
-					cout<<"\n\tDiscount if any? ";
-					cin>>discount ;
-					
-					data1<<" "<<productNewCode<<" "<<newProductName<<" "<<newPrice<<" "<<newDiscount<<endl;
-				}
-				else
-					data1<<" "<<productCode<<" "<<productName<<" "<<price<<" "<<discount<<endl;
-				
-				data>>productCode>>productName>>price>>discount;
-			}
-			data.close();
-			data1.close();
-			remove("database.txt");
-			rename("database1.txt", "database.txt");
-			if(token == 0)
-				cout<<"\n\tRecord not found!";		
-		}
-	}
 	
 	void shopping::remov(){
 		fstream data, data1;
